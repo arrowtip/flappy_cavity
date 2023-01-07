@@ -1,8 +1,11 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flappy_cavity/screens/game_screen.dart';
+import 'package:flappy_cavity/screens/records_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +52,12 @@ class Home extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const GameScreen()));
+              },
               style: fullMenuButtonStyle,
               child: const Text("new"),
             ),
@@ -57,7 +65,12 @@ class Home extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5),
             child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RecordsScreen()));
+                },
                 style: fullMenuButtonStyle,
                 child: const Text("records")),
           ),
@@ -79,7 +92,12 @@ class Home extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(5, 5, 0, 5),
                   child: ElevatedButton(
                     style: halfMenuButtonStyle,
-                    onPressed: () {},
+                    onPressed: () async {
+                      if (!await launchUrl(Uri.parse(
+                          "https://github.com/arrowtip/flappy_cavity"))) {
+                        throw "Could not launch github url";
+                      }
+                    },
                     child: const Text("github"),
                   ),
                 )
