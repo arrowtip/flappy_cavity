@@ -13,9 +13,22 @@ class _RecordsScreenState extends State<RecordsScreen> {
   final List<RecordModel> _records = [];
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      appBar: AppBar(title: const Text("your records")),
       body: Text("not yet done"),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }

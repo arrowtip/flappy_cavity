@@ -31,10 +31,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   animated_text_kit: ^4.2.2
-
   url_launcher: ^6.1.7
+  sqflite:
+  path:
 
 
   # The following adds the Cupertino Icons font to your application.

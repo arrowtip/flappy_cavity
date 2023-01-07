@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 import 'screens/home_screen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  const String databaseName = "flappy_cavity.db";
+  const int databaseVersion = 1;
+  final Future<Database> database = openDatabase(
+      join(await getDatabasesPath(), databaseName), onCreate: (db, version) {
+    return db.execute("create table Records("
+        "id integer primary key, "
+        "durationSec integer not null, "
+        "date integer not null, "
+        "barriersPassed integer not null");
+  }, version: databaseVersion);
   runApp(const MyApp());
 }
 
