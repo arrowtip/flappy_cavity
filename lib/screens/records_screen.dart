@@ -21,8 +21,9 @@ class _RecordsScreenState extends State<RecordsScreen> {
   }
 
   Future<void> _getRecords() async {
-    setState(() async {
-      _records.addAll(await getRecordsFromDatabase());
+    List<RecordModel> records = await getRecordsFromDatabase();
+    setState(() {
+      _records.addAll(records);
     });
   }
 

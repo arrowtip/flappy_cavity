@@ -1,11 +1,25 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flappy_cavity/screens/game_screen.dart';
 import 'package:flappy_cavity/screens/records_screen.dart';
+import 'package:flappy_cavity/services/earbud_service.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late final EarbudService _earbudService;
+
+  @override
+  void initState() {
+    _earbudService = EarbudService();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +70,7 @@ class HomeScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const GameScreen()));
+                        builder: (context) => GameScreen(_earbudService)));
               },
               style: fullMenuButtonStyle,
               child: const Text("new"),
@@ -103,6 +117,32 @@ class HomeScreen extends StatelessWidget {
                 )
               ],
             ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Padding(
+                padding: EdgeInsets.fromLTRB(0, 30, 0, 5),
+                child: Text("Connection Status:"),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5),
+                child: Text(
+                    _earbudService.isConnected ? "connected" : "disconnected"),
+              ),
+              Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      _earbudService.connect();
+                      await Future.delayed(Duration(seconds: 10));
+                      setState(() {});
+                    },
+                    child: const Text("connect"),
+                  )),
+            ],
           )
         ],
       )),
