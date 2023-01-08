@@ -5,12 +5,12 @@ class RecordModel {
 
   RecordModel(this._runDuration, this._runDate, this._barriersPassed);
 
-  int get duration {
-    return _runDuration.inSeconds;
+  Duration get duration {
+    return _runDuration;
   }
 
-  int get date {
-    return _runDate.millisecondsSinceEpoch;
+  DateTime get date {
+    return _runDate;
   }
 
   int get barriersPassed {

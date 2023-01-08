@@ -16,7 +16,7 @@ Future<void> main() async {
         "id integer primary key, "
         "durationSec integer not null, "
         // "date integer not null, " id is used as both date and id
-        "barriersPassed integer not null");
+        "barriersPassed integer not null)");
   }, version: databaseVersion);
   runApp(const MyApp());
 }
