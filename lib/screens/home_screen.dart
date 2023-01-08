@@ -67,10 +67,34 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.all(5),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => GameScreen(_earbudService)));
+                if (_earbudService.isConnected) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => GameScreen(_earbudService)));
+                } else {
+                  showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text("no heartbeat measurer connected"),
+                        content:
+                            const Text("please connect your cosinuss earbud"),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                _earbudService.connect();
+                                Navigator.pop(context, "connect");
+                              },
+                              child: const Text("connect")),
+                          TextButton(
+                              onPressed: () => Navigator.pop(context, "cancel"),
+                              child: const Text("cancel"))
+                        ],
+                      );
+                    },
+                  );
+                }
               },
               style: fullMenuButtonStyle,
               child: const Text("new"),
@@ -137,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ElevatedButton(
                     onPressed: () async {
                       _earbudService.connect();
-                      await Future.delayed(Duration(seconds: 10));
+                      await Future.delayed(const Duration(seconds: 9));
                       setState(() {});
                     },
                     child: const Text("connect"),

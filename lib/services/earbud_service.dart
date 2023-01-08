@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
 class EarbudService {
@@ -56,7 +57,7 @@ class EarbudService {
     FlutterBlue flutterBlue = FlutterBlue.instance;
 
     // start scanning
-    flutterBlue.startScan(timeout: const Duration(seconds: 10));
+    flutterBlue.startScan(timeout: const Duration(seconds: 8));
 
     if (!_isConnected) {
       flutterBlue.connectedDevices.asStream().listen((devices) async {
@@ -94,7 +95,9 @@ class EarbudService {
               if (characteristic.uuid.toString() ==
                   "00002a37-0000-1000-8000-00805f9b34fb") {
                 characteristic.value.listen((event) {
-                  print("heart rate: ${_calculateHeartRate(event)}");
+                  if (kDebugMode) {
+                    print("heart rate: ${_calculateHeartRate(event)}");
+                  }
                   if (streamActive) {
                     streamController.add(_calculateHeartRate(event));
                   }

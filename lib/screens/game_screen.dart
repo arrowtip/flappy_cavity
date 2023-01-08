@@ -27,4 +27,9 @@ class _GameScreenState extends State<GameScreen> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 }
