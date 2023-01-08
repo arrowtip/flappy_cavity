@@ -4,16 +4,18 @@ import 'package:sqflite/sqflite.dart';
 
 import 'screens/home_screen.dart';
 
+late Database database;
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   const String databaseName = "flappy_cavity.db";
   const int databaseVersion = 1;
-  final Future<Database> database = openDatabase(
-      join(await getDatabasesPath(), databaseName), onCreate: (db, version) {
+  database = await openDatabase(join(await getDatabasesPath(), databaseName),
+      onCreate: (db, version) {
     return db.execute("create table Records("
         "id integer primary key, "
         "durationSec integer not null, "
-        "date integer not null, "
+        // "date integer not null, " id is used as both date and id
         "barriersPassed integer not null");
   }, version: databaseVersion);
   runApp(const MyApp());
