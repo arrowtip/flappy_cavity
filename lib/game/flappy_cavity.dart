@@ -7,7 +7,9 @@ class FlappyCavity extends FlameGame {
   Future<void> onLoad() async {
     await super.onLoad();
 
+    final playerSprite = await loadSprite("");
     add(Player()
+      ..sprite = playerSprite
       ..position = size / 2
       ..width = 50
       ..height = 100
