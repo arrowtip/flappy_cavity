@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_blue/flutter_blue.dart';
@@ -11,31 +10,9 @@ class EarbudService {
   static const int _lastBpmSize = 3;
   int _currentBpmIndex = 0;
   final List<int> _lastBPMs = List.filled(_lastBpmSize, 80);
-  late final Stream<List<int>> _rawDataStream;
-  bool streamActive = false;
-  late final StreamController<double> streamController =
-      StreamController(onListen: () {
-    streamActive = true;
-  }, onCancel: () {
-    streamActive = false;
-  }, onResume: () {
-    streamActive = true;
-  }, onPause: () {
-    streamActive = false;
-  });
-
+  double _currentBPM = 80;
+  double get bpm => _currentBPM;
   bool get isConnected => _isConnected;
-
-  Stream<int> get bpmStream =>
-      streamController.stream.map((event) => event.round());
-
-  static Stream<int> _counterStream() async* {
-    int i = 1;
-    while (true) {
-      await Future.delayed(const Duration(seconds: 1));
-      yield i++;
-    }
-  }
 
   double _calculateHeartRate(List<int> rawData) {
     Uint8List bytes = Uint8List.fromList(rawData);
@@ -95,13 +72,11 @@ class EarbudService {
               // iterate over characteristics
               if (characteristic.uuid.toString() ==
                   "00002a37-0000-1000-8000-00805f9b34fb") {
-                characteristic.value.listen((event) {
+                characteristic.value.listen((rawData) {
                   if (kDebugMode) {
-                    print("heart rate: ${_calculateHeartRate(event)}");
+                    print("heart rate: ${_calculateHeartRate(rawData)}");
                   }
-                  if (streamActive) {
-                    streamController.add(_calculateHeartRate(event));
-                  }
+                  _currentBPM = _calculateHeartRate(rawData);
                 });
                 await characteristic.setNotifyValue(true);
                 await Future.delayed(_updateInterval);
