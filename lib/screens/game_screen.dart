@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import '../game/flappy_cavity.dart';
 
 class GameScreen extends StatefulWidget {
-  final EarbudService earbudService;
+  final EarbudService _earbudService;
 
-  const GameScreen(this.earbudService, {Key? key}) : super(key: key);
+  const GameScreen(this._earbudService, {Key? key}) : super(key: key);
 
   @override
   State<GameScreen> createState() => _GameScreenState();
@@ -16,7 +16,7 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
-    return GameWidget(game: FlappyCavity());
+    return GameWidget(game: FlappyCavity(widget._earbudService));
   }
 
   @override

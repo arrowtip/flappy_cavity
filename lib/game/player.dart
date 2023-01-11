@@ -2,9 +2,12 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flappy_cavity/game/bone_obstacle.dart';
 import 'package:flappy_cavity/game/flappy_cavity.dart';
+import 'package:flutter/foundation.dart';
 
 class Player extends SpriteComponent
     with HasGameRef<FlappyCavity>, CollisionCallbacks {
+  late ShapeHitbox hitbox;
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
@@ -13,6 +16,9 @@ class Player extends SpriteComponent
     width = 7 * FlappyCavity.pixelRatio;
     height = 6 * FlappyCavity.pixelRatio;
     anchor = Anchor.center;
+    hitbox = RectangleHitbox(isSolid: true)
+      ..collisionType = CollisionType.active;
+    add(hitbox);
   }
 
   void move(double newPos) {
@@ -20,7 +26,16 @@ class Player extends SpriteComponent
   }
 
   @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+  update(double dt) {
+    super.update(dt);
+    position.y = clampDouble(gameRef.earBudService.bpm,
+        gameRef.minHeartRate.toDouble(), gameRef.maxHeartRate.toDouble());
+  }
+
+  @override
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollisionStart(intersectionPoints, other);
     if (other is BoneObstacle) {
       print("collision");
     }
