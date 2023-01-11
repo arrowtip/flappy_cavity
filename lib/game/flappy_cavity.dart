@@ -1,11 +1,12 @@
 import 'package:flame/game.dart';
 import 'package:flappy_cavity/game/bone_obstacle.dart';
+import 'package:flappy_cavity/game/hud.dart';
 import 'package:flappy_cavity/game/player.dart';
 import 'package:flappy_cavity/services/earbud_service.dart';
 
 // TODO add with SingleGameInstance
 class FlappyCavity extends FlameGame with HasCollisionDetection {
-  EarbudService _earbudService;
+  final EarbudService _earbudService;
   static const String playerSprite = "heart.png";
   static const String boneObstacleSprite = "bone.png";
   static const double pixelRatio = 4.0;
@@ -29,6 +30,10 @@ class FlappyCavity extends FlameGame with HasCollisionDetection {
       ..x = size.x / 2
       ..y = size.y / 2
       ..priority = 2);
+    add(Hud()
+      ..x = size.x / 2
+      ..y = 5
+      ..priority = 4);
   }
 
   int get minHeartRate => _minHeartRate;

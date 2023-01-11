@@ -27,9 +27,14 @@ class Player extends SpriteComponent
 
   @override
   update(double dt) {
+    position.y =
+        (gameRef.size.y / (gameRef.maxHeartRate - gameRef.minHeartRate)) *
+            (gameRef.maxHeartRate -
+                clampDouble(
+                    gameRef.earBudService.bpm,
+                    gameRef.minHeartRate.toDouble(),
+                    gameRef.maxHeartRate.toDouble()));
     super.update(dt);
-    position.y = clampDouble(gameRef.earBudService.bpm,
-        gameRef.minHeartRate.toDouble(), gameRef.maxHeartRate.toDouble());
   }
 
   @override

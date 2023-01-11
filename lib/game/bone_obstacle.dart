@@ -17,4 +17,9 @@ class BoneObstacle extends SpriteComponent with HasGameRef<FlappyCavity> {
       ..collisionType = CollisionType.passive;
     add(hitbox);
   }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+  }
 }
