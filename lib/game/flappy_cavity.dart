@@ -1,18 +1,26 @@
-import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:flappy_cavity/game/bone_obstacle.dart';
 import 'package:flappy_cavity/game/player.dart';
 
-class FlappyCavity extends FlameGame {
+// TODO add with SingleGameInstance
+class FlappyCavity extends FlameGame with HasCollisionDetection {
+  static const String playerSprite = "heart.png";
+  static const String boneObstacleSprite = "bone.png";
+  static const double pixelRatio = 4.0;
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
-    final playerSprite = await loadSprite("");
+    final playerSprite = await loadSprite(FlappyCavity.playerSprite);
+
     add(Player()
-      ..sprite = playerSprite
-      ..position = size / 2
-      ..width = 50
-      ..height = 100
-      ..anchor = Anchor.center);
+      ..priority = 3
+      ..x = size.x / 8
+      ..y = size.y / 2);
+    add(BoneObstacle()
+      ..x = size.x / 2
+      ..y = size.y / 2
+      ..priority = 2);
   }
 }
