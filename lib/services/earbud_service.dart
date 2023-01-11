@@ -53,7 +53,7 @@ class EarbudService {
         0.1 * _lastBPMs[(_currentBpmIndex - 2) % _lastBpmSize]);
   }
 
-  void connect() {
+  void connect({required Function onConnectStateChange}) {
     FlutterBlue flutterBlue = FlutterBlue.instance;
 
     // start scanning
@@ -80,7 +80,8 @@ class EarbudService {
 
           r.device.state.listen((state) {
             // listen for connection state changes
-            _isConnected = state == BluetoothDeviceState.connected;
+            _isConnected = (state == BluetoothDeviceState.connected);
+            onConnectStateChange();
           });
 
           await r.device.connect();

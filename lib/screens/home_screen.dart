@@ -14,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late final EarbudService _earbudService;
+  String _shownConnectionStatus = "disconnected";
 
   @override
   void initState() {
@@ -83,7 +84,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         actions: [
                           TextButton(
                               onPressed: () {
-                                _earbudService.connect();
+                                _earbudService.connect(
+                                    onConnectStateChange: () {
+                                  setState(() {
+                                    _shownConnectionStatus =
+                                        _earbudService.isConnected
+                                            ? "connected"
+                                            : "disconnected";
+                                  });
+                                });
                                 Navigator.pop(context, "connect");
                               },
                               child: const Text("connect")),
@@ -153,16 +162,19 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.all(5),
-                child: Text(
-                    _earbudService.isConnected ? "connected" : "disconnected"),
+                child: Text(_shownConnectionStatus),
               ),
               Padding(
                   padding: const EdgeInsets.all(5),
                   child: ElevatedButton(
                     onPressed: () async {
-                      _earbudService.connect();
-                      await Future.delayed(const Duration(seconds: 9));
-                      setState(() {});
+                      _earbudService.connect(onConnectStateChange: () {
+                        setState(() {
+                          _shownConnectionStatus = _earbudService.isConnected
+                              ? "connected"
+                              : "disconnected";
+                        });
+                      });
                     },
                     child: const Text("connect"),
                   )),
