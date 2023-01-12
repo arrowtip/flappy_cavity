@@ -36,6 +36,8 @@ class Player extends SpriteComponent
                     gameRef.earBudService.bpm,
                     gameRef.minHeartRate.toDouble(),
                     gameRef.maxHeartRate.toDouble()));
+
+    // position.y = gameRef.size.y / 2;
     super.update(dt);
   }
 

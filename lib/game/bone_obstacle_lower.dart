@@ -19,6 +19,7 @@ class BoneObstacleLower extends SpriteComponent with HasGameRef<FlappyCavity> {
     height = 200 * FlappyCavity.pixelRatio;
     anchor = Anchor.topCenter;
     position.y = lower;
+    position.x = gameRef.size.x + width;
     _hitbox = RectangleHitbox(isSolid: true)
       ..collisionType = CollisionType.passive;
     add(_hitbox);
@@ -30,7 +31,7 @@ class BoneObstacleLower extends SpriteComponent with HasGameRef<FlappyCavity> {
 
   @override
   void update(double dt) {
-    position.x -= dt * 100;
+    position.x -= dt * 10;
     if (position.x < -width) {
       removeFromParent();
     }
