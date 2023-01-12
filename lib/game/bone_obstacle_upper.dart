@@ -2,24 +2,19 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flappy_cavity/game/flappy_cavity.dart';
 
-class BoneObstacle extends SpriteComponent with HasGameRef<FlappyCavity> {
-  late ShapeHitbox hitbox;
+class BoneObstacleUpper extends SpriteComponent with HasGameRef<FlappyCavity> {
+  late ShapeHitbox _hitbox;
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
-    sprite = await gameRef.loadSprite(FlappyCavity.boneObstacleSprite);
+    sprite = await gameRef.loadSprite(FlappyCavity.boneUpperSprite);
     width = 12 * FlappyCavity.pixelRatio;
     height = 200 * FlappyCavity.pixelRatio;
-    anchor = Anchor.topCenter;
-    hitbox = RectangleHitbox(isSolid: true)
+    anchor = Anchor.bottomCenter;
+    _hitbox = RectangleHitbox(isSolid: true)
       ..collisionType = CollisionType.passive;
-    add(hitbox);
-  }
-
-  @override
-  void update(double dt) {
-    super.update(dt);
+    add(_hitbox);
   }
 }

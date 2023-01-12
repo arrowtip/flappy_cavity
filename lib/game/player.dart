@@ -1,8 +1,10 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flappy_cavity/game/bone_obstacle.dart';
+import 'package:flappy_cavity/game/bone_obstacle_upper.dart';
 import 'package:flappy_cavity/game/flappy_cavity.dart';
 import 'package:flutter/foundation.dart';
+
+import 'bone_obstacle_lower.dart';
 
 class Player extends SpriteComponent
     with HasGameRef<FlappyCavity>, CollisionCallbacks {
@@ -41,8 +43,9 @@ class Player extends SpriteComponent
   void onCollisionStart(
       Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
-    if (other is BoneObstacle) {
-      print("collision");
+    if (other is BoneObstacleLower || other is BoneObstacleUpper) {
+      gameRef.gameEnded();
+      gameRef.overlays.add("GameOver");
     }
   }
 }
