@@ -7,11 +7,12 @@ import 'package:flappy_cavity/services/database_service.dart';
 import 'package:flappy_cavity/services/earbud_service.dart';
 
 // TODO add with SingleGameInstance
-class FlappyCavity extends FlameGame with HasCollisionDetection {
+class FlappyCavity extends FlameGame with HasCollisionDetection, HasTappables {
   final EarbudService _earbudService;
   static const String playerSprite = "heart.png";
   static const String boneLowerSprite = "bone_lower.png";
   static const String boneUpperSprite = "bone_upper.png";
+  static const String pauseButtonSprite = "pause_button.png";
   static const double pixelRatio = 4.0;
   final int _minHeartRate;
   final int _maxHeartRate;
@@ -33,8 +34,7 @@ class FlappyCavity extends FlameGame with HasCollisionDetection {
       ..y = size.y / 2
       ..priority = 2);
     add(Hud()
-      ..x = size.x / 2
-      ..y = 5
+      ..position = Vector2(0, 0)
       ..priority = 4);
 
     _gameStart = DateTime.now();
@@ -55,7 +55,6 @@ class FlappyCavity extends FlameGame with HasCollisionDetection {
   EarbudService get earBudService => _earbudService;
 
   Future<void> reset() async {
-    overlays.remove("GameOver");
     resumeEngine();
     removeAll(children);
     _barriersPassed = 0;
@@ -66,6 +65,8 @@ class FlappyCavity extends FlameGame with HasCollisionDetection {
     pauseEngine();
     RecordModel record =
         RecordModel(DateTime.now().difference(_gameStart), DateTime.now(), 10);
+    print(record.duration);
+    print(record.date);
     await insertRecordIntoDatabase(record);
     print("record added");
   }

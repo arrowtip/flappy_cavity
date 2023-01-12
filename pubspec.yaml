@@ -69,6 +69,7 @@ flutter:
     - assets/images/heart.png
     - assets/images/bone_lower.png
     - assets/images/bone_upper.png
+    - assets/images/pause_button.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

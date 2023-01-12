@@ -1,8 +1,8 @@
 import 'package:flappy_cavity/game/flappy_cavity.dart';
 import 'package:flutter/material.dart';
 
-class GameOver extends StatelessWidget {
-  const GameOver({Key? key, required this.game}) : super(key: key);
+class PauseMenu extends StatelessWidget {
+  const PauseMenu({Key? key, required this.game}) : super(key: key);
 
   final FlappyCavity game;
 
@@ -19,9 +19,9 @@ class GameOver extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () async {
                 await game.reset();
-                game.overlays.remove("GameOver");
+                game.overlays.remove("PauseMenu");
               },
-              child: const Text("retry"),
+              child: const Text("restart"),
             ),
           ),
           Padding(

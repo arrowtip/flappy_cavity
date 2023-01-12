@@ -1,5 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flappy_cavity/game/game_over.dart';
+import 'package:flappy_cavity/game/pause_menu.dart';
 import 'package:flappy_cavity/services/earbud_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,7 +28,8 @@ class _GameScreenState extends State<GameScreen> {
     return GameWidget(
         game: FlappyCavity(widget._earbudService),
         overlayBuilderMap: {
-          "GameOver": (_, FlappyCavity game) => GameOver(game: game)
+          "GameOver": (_, FlappyCavity game) => GameOver(game: game),
+          "PauseMenu": (_, FlappyCavity game) => PauseMenu(game: game)
         });
   }
 

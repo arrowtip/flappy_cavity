@@ -11,7 +11,11 @@ Future<void> insertRecordIntoDatabase(RecordModel record) async {
   await database.rawInsert(
       "insert into $_recordTable ($_recordId, $_recordDuration, $_recordBarriersPassed)"
       "values (?, ?, ?)",
-      [record.date, record.duration, record.barriersPassed]);
+      [
+        record.date.millisecondsSinceEpoch,
+        record.duration.inSeconds,
+        record.barriersPassed
+      ]);
 }
 
 Future<List<RecordModel>> getRecordsFromDatabase() async {

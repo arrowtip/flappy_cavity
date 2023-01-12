@@ -8,6 +8,7 @@ class RecordListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime date = _record.date.toLocal();
     return Card(
       color: Colors.white,
       child: Row(
@@ -16,7 +17,7 @@ class RecordListTile extends StatelessWidget {
         children: [
           Text("time: ${_record.duration.inSeconds}s"),
           Text("#barriers: ${_record.barriersPassed}"),
-          Text("date: ${_record.date.toIso8601String()}")
+          Text("date: ${date.year}-${date.month}-${date.day}")
         ],
       ),
     );
