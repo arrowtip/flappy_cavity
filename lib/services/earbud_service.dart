@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class EarbudService {
+  late FlutterBlue _flutterBlue;
   bool _isConnected = false;
   bool _earConnectFound = false;
   final Duration _updateInterval = const Duration(milliseconds: 1000);
@@ -13,6 +15,10 @@ class EarbudService {
   double _currentBPM = 80;
   double get bpm => _currentBPM;
   bool get isConnected => _isConnected;
+
+  EarbudService() {
+    _flutterBlue = FlutterBlue.instance;
+  }
 
   double _calculateHeartRate(List<int> rawData) {
     Uint8List bytes = Uint8List.fromList(rawData);
@@ -30,14 +36,20 @@ class EarbudService {
         0.1 * _lastBPMs[(_currentBpmIndex - 2) % _lastBpmSize]);
   }
 
-  void connect({required Function onConnectStateChange}) {
-    FlutterBlue flutterBlue = FlutterBlue.instance;
+  Future<bool> isBluetoothEnabled() async {
+    return await _flutterBlue.isOn;
+  }
 
+  Future<bool> isLocationEnabled() async {
+    return await Permission.locationWhenInUse.serviceStatus.isEnabled;
+  }
+
+  void connect({required Function onConnectStateChange}) {
     // start scanning
-    flutterBlue.startScan(timeout: const Duration(seconds: 8));
+    _flutterBlue.startScan(timeout: const Duration(seconds: 8));
 
     if (!_isConnected) {
-      flutterBlue.connectedDevices.asStream().listen((devices) async {
+      _flutterBlue.connectedDevices.asStream().listen((devices) async {
         for (var device in devices) {
           if (device.name == "earconnect") {
             await device.disconnect();
@@ -47,13 +59,13 @@ class EarbudService {
     }
 
     // listen to scan results
-    flutterBlue.scanResults.listen((results) async {
+    _flutterBlue.scanResults.listen((results) async {
       // do something with scan results
       for (ScanResult r in results) {
         if (r.device.name == "earconnect" && !_earConnectFound) {
           _earConnectFound = true;
 
-          await flutterBlue.stopScan();
+          await _flutterBlue.stopScan();
 
           r.device.state.listen((state) {
             // listen for connection state changes

@@ -68,13 +68,44 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.all(5),
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_earbudService.isConnected) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => GameScreen(_earbudService)));
                 } else {
+                  if (!await _earbudService.isBluetoothEnabled()) {
+                    showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                              title: const Text("Bluetooth is not enabled"),
+                              content: const Text("please enable it"),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context, "OK");
+                                    },
+                                    child: const Text("OK"))
+                              ]);
+                        });
+                  } else if (!await _earbudService.isLocationEnabled()) {
+                    showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                              title: const Text("Location is not enabled"),
+                              content: const Text("please enable it"),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context, "OK");
+                                    },
+                                    child: const Text("OK"))
+                              ]);
+                        });
+                  }
                   showDialog<String>(
                     context: context,
                     builder: (BuildContext context) {
@@ -175,6 +206,37 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(5),
                   child: ElevatedButton(
                     onPressed: () async {
+                      if (!await _earbudService.isBluetoothEnabled()) {
+                        showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                  title: const Text("Bluetooth is not enabled"),
+                                  content: const Text("please enable it"),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context, "OK");
+                                        },
+                                        child: const Text("OK"))
+                                  ]);
+                            });
+                      } else if (!await _earbudService.isLocationEnabled()) {
+                        showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                  title: const Text("Location is not enabled"),
+                                  content: const Text("please enable it"),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context, "OK");
+                                        },
+                                        child: const Text("OK"))
+                                  ]);
+                            });
+                      }
                       _earbudService.connect(onConnectStateChange: () {
                         setState(() {
                           _shownConnectionStatus = _earbudService.isConnected
