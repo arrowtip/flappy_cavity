@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -18,6 +19,7 @@ Future<void> main() async {
         // "date integer not null, " id is used as both date and id
         "barriersPassed integer not null)");
   }, version: databaseVersion);
+  await Settings.init();
   runApp(const MyApp());
 }
 

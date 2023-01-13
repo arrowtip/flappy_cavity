@@ -8,6 +8,7 @@ import 'package:flappy_cavity/game/player.dart';
 import 'package:flappy_cavity/models/record_model.dart';
 import 'package:flappy_cavity/services/database_service.dart';
 import 'package:flappy_cavity/services/earbud_service.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
 // TODO add with SingleGameInstance
 class FlappyCavity extends FlameGame with HasCollisionDetection, HasTappables {
@@ -17,19 +18,19 @@ class FlappyCavity extends FlameGame with HasCollisionDetection, HasTappables {
   static const String boneUpperSprite = "bone_upper.png";
   static const String pauseButtonSprite = "pause_button.png";
   static const double pixelRatio = 4.0;
-  final int _minGapWidth;
-  final int _minHeartRate;
-  final int _maxHeartRate;
+  final double _minGapWidth;
+  final double _minHeartRate;
+  final double _maxHeartRate;
   int _gameDurationSec = 0;
   int _barriersPassed = 0;
   late TimerComponent _durationTimerComp;
   late TimerComponent _obstacleTimerComp;
 
-  FlappyCavity(this._earbudService,
-      {int minHeartRate = 50, int maxHeartRate = 200, int minGapWidth = 30})
-      : _minHeartRate = minHeartRate,
-        _maxHeartRate = maxHeartRate,
-        _minGapWidth = minGapWidth {
+  FlappyCavity(this._earbudService)
+      : _minHeartRate = Settings.getValue<double>("min-heart-rate", 60),
+        _maxHeartRate = Settings.getValue<double>("max-heart-rate", 180),
+        _minGapWidth = Settings.getValue<double>("min-gap-width", 30) {
+    print(_minGapWidth);
     _obstacleTimerComp = TimerComponent(
         period: 45, repeat: true, onTick: _addObstacle, autoStart: false);
     add(_obstacleTimerComp);
@@ -78,8 +79,8 @@ class FlappyCavity extends FlameGame with HasCollisionDetection, HasTappables {
     _initializeGame();
   }
 
-  int get minHeartRate => _minHeartRate;
-  int get maxHeartRate => _maxHeartRate;
+  double get minHeartRate => _minHeartRate;
+  double get maxHeartRate => _maxHeartRate;
   EarbudService get earBudService => _earbudService;
 
   Future<void> reset() async {

@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flappy_cavity/screens/game_screen.dart';
+import 'package:flappy_cavity/screens/options_screen.dart';
 import 'package:flappy_cavity/screens/records_screen.dart';
 import 'package:flappy_cavity/services/earbud_service.dart';
 import 'package:flutter/material.dart';
@@ -79,8 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (BuildContext context) {
                       return AlertDialog(
                         title: const Text("no heartbeat measurer connected"),
-                        content:
-                            const Text("please connect your cosinuss earbud"),
+                        content: const Text(
+                            "please connect your cosinuss earbud.\n"
+                            "Remember to turn bluetooth and location services on"),
                         actions: [
                           TextButton(
                               onPressed: () {
@@ -131,7 +133,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.fromLTRB(0, 5, 5, 5),
                   child: ElevatedButton(
                     style: halfMenuButtonStyle,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OptionsScreen()));
+                    },
                     child: const Text("options"),
                   ),
                 ),
