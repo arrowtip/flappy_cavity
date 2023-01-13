@@ -79,6 +79,7 @@ class FlappyCavity extends FlameGame with HasCollisionDetection, HasTappables {
   Future<void> onLoad() async {
     await super.onLoad();
     _initializeGame();
+    if (paused) resumeEngine();
   }
 
   double get minHeartRate => _minHeartRate;

@@ -29,6 +29,10 @@ class Player extends SpriteComponent
 
   @override
   update(double dt) {
+    if (!gameRef.earBudService.isConnected) {
+      gameRef.pauseEngine();
+      gameRef.overlays.add("ReconnectMenu");
+    }
     position.y =
         (gameRef.size.y / (gameRef.maxHeartRate - gameRef.minHeartRate)) *
             (gameRef.maxHeartRate -

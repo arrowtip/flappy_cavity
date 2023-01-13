@@ -168,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => OptionsScreen()));
+                              builder: (context) => const OptionsScreen()));
                     },
                     child: const Text("options"),
                   ),
