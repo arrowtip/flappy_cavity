@@ -18,6 +18,7 @@ class FlappyCavity extends FlameGame with HasCollisionDetection, HasTappables {
   static const String boneUpperSprite = "bone_upper.png";
   static const String pauseButtonSprite = "pause_button.png";
   static const double pixelRatio = 4.0;
+  late double _playerXPos;
   final double _minGapWidth;
   final double _minHeartRate;
   final double _maxHeartRate;
@@ -56,9 +57,10 @@ class FlappyCavity extends FlameGame with HasCollisionDetection, HasTappables {
   }
 
   void _initializeGame() {
+    _playerXPos = size.x / 8;
     add(Player()
       ..priority = 3
-      ..x = size.x / 8
+      ..x = _playerXPos
       ..y = size.y / 2);
     add(Hud()
       ..position = Vector2(0, 0)
@@ -81,6 +83,7 @@ class FlappyCavity extends FlameGame with HasCollisionDetection, HasTappables {
 
   double get minHeartRate => _minHeartRate;
   double get maxHeartRate => _maxHeartRate;
+  double get playerXPos => _playerXPos;
   EarbudService get earBudService => _earbudService;
 
   Future<void> reset() async {

@@ -26,6 +26,8 @@ class _RecordsScreenState extends State<RecordsScreen> {
       for (RecordModel record in records) {
         if (!_records.contains(record)) {
           _records.add(record);
+          _records.sort((RecordModel r1, RecordModel r2) =>
+              r2.barriersPassed - r1.barriersPassed);
         }
       }
     });

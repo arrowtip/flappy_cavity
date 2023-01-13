@@ -36,7 +36,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
               title: "maximum heart rate",
               settingKey: "max-heart-rate",
               defaultValue: _defaultMaxHeartRate,
-              min: 130,
+              min: 80,
               max: 210,
               step: 1,
               leading: Icon(Icons.monitor_heart),
@@ -51,7 +51,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                 settingKey: "min-gap-width",
                 defaultValue: _defaultMinGapWidth,
                 min: 10,
-                max: 150,
+                max: 300,
                 step: 1,
                 leading: Icon(Icons.social_distance))
           ],

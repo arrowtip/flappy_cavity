@@ -8,6 +8,7 @@ class BoneObstacleLower extends SpriteComponent with HasGameRef<FlappyCavity> {
   late BoneObstacleUpper _upperPart;
   double lower;
   double upper;
+  bool _passed = false;
 
   BoneObstacleLower({required this.lower, required this.upper});
   @override
@@ -32,6 +33,10 @@ class BoneObstacleLower extends SpriteComponent with HasGameRef<FlappyCavity> {
   @override
   void update(double dt) {
     position.x -= dt * 10;
+    if (!_passed && position.x + width / 2 < gameRef.playerXPos) {
+      gameRef.barrierPassed();
+      _passed = true;
+    }
     if (position.x < -width) {
       removeFromParent();
     }
