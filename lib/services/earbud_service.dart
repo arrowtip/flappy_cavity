@@ -9,10 +9,10 @@ class EarbudService {
   bool _isConnected = false;
   bool _earConnectFound = false;
   final Duration _updateInterval = const Duration(milliseconds: 1000);
-  static const int _lastBpmSize = 3;
-  int _currentBpmIndex = 0;
-  final List<int> _lastBPMs = List.filled(_lastBpmSize, 80);
   double _currentBPM = 80;
+  double _lastSmoothedBPM = 80;
+  double _lastSndSmoothedBPM = 80;
+  final double _smoothingAlpha = 0.8;
   double get bpm => _currentBPM;
   bool get isConnected => _isConnected;
 
@@ -29,11 +29,13 @@ class EarbudService {
       bpm = (((bpm >> 8) & 0xFF) | ((bpm << 8) & 0xFF00));
     }
 
-    _currentBpmIndex = (_currentBpmIndex + 1) % _lastBpmSize;
-    _lastBPMs[_currentBpmIndex] = bpm;
-    return (0.6 * _lastBPMs[_currentBpmIndex] +
-        0.3 * _lastBPMs[(_currentBpmIndex - 1) % _lastBpmSize] +
-        0.1 * _lastBPMs[(_currentBpmIndex - 2) % _lastBpmSize]);
+    double currentSmoothedBPM =
+        _lastSmoothedBPM + _smoothingAlpha * (bpm - _lastSmoothedBPM);
+    double currentSndSmoothedBPM = _lastSndSmoothedBPM +
+        _smoothingAlpha * (currentSmoothedBPM - _lastSndSmoothedBPM);
+    _lastSmoothedBPM = currentSmoothedBPM;
+    _lastSndSmoothedBPM = currentSndSmoothedBPM;
+    return 2 * currentSmoothedBPM - currentSndSmoothedBPM;
   }
 
   Future<bool> isBluetoothEnabled() async {
