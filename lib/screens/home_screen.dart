@@ -178,9 +178,30 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ElevatedButton(
                     style: halfMenuButtonStyle,
                     onPressed: () async {
-                      if (!await launchUrl(Uri.parse(
-                          "https://github.com/arrowtip/flappy_cavity"))) {
-                        throw "Could not launch github url";
+                      bool couldLaunch = false;
+                      try {
+                        couldLaunch = await launchUrl(Uri.parse(
+                            "https://github.com/arrowtip/flappy_cavity"));
+                      } catch (e) {
+                        // if exception is thrown couldLaunch remains false
+                      }
+                      if (!couldLaunch) {
+                        showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                  title: const Text("Could not open the url"),
+                                  content: const Text("To visit the github "
+                                      "open a browser and go to "
+                                      "\"https://github.com/arrowtip/flappy_cavity\""),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context, "OK");
+                                        },
+                                        child: const Text("OK"))
+                                  ]);
+                            });
                       }
                     },
                     child: const Text("github"),
